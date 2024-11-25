@@ -67,5 +67,5 @@ jobs:
 
       - name: Deploy to EKS using Helm
         run: |
-          helm upgrade --install -f ./values.yaml -f ./${{HELM_VALUES_FILE_PATH}} --set imageRegistry=${{steps.login-ecr.outputs.registry}} ev-app .
+          helm upgrade --install -f ./values.yaml -f ${{HELM_VALUES_FILE_PATH}} --set imageRegistry=${{steps.login-ecr.outputs.registry}} ev-app .
       
