@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.evIngress.name }}
+  namespace: {{ .Values.namespace }}
+  {{- with .Values.evIngress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.evIngress.ingressClassName }}
+  rules:
+    - host: {{ .Values.evFrontend1.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.evFrontend1.serviceName }}
+                port:
+                  number: {{ .Values.evFrontend1.port }}
+    - host: {{ .Values.evFrontend2.host }}
+      http:
+        paths:
+         - path: /
+           pathType: Prefix
+           backend:
+              service:
+                name: {{ .Values.evFrontend2.serviceName }}
+                port:
+                  number: {{ .Values.evFrontend2.port }}
+    - host: {{ .Values.evApi1.host }}
+      http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: {{ .Values.evApi1.serviceName }}
+                  port:
+                    number: {{ .Values.evApi1.port }}
+    - host: {{ .Values.evApi2.host }}
+      http:
+         paths:
+           - path: /
+             pathType: Prefix
+             backend:
+               service:
+                 name: {{ .Values.evApi2.serviceName }}
+                 port:
+                   number: {{ .Values.evApi2.port }}

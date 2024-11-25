@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.evFrontend1.deploymentName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.evFrontend1.name }}
+spec:
+  replicas: {{ .Values.evFrontend1.initReplicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.evFrontend1.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.evFrontend1.name }}
+    spec:
+      containers:
+        - name: {{ .Values.evFrontend1.name }}
+          image: {{ .Values.imageRegistry}}/{{ .Values.evFrontend1.image.imageName}}:{{ .Values.evFrontend1.image.imageTag }}
+          ports:
+            - containerPort: {{ .Values.evFrontend1.port }}

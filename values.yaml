@@ -1,0 +1,81 @@
+imageRegistry: 631248157752.dkr.ecr.us-east-1.amazonaws.com
+namespace: default
+evApi1:
+  name: ev-api1
+  deploymentName: ev-api1-deployment
+  serviceName: ev-api1-service
+  hpaName: ev-api1-hpa
+  host: ev-api1.prasonisoftwaresolutionsltd.co.uk
+  image:
+    imageName: ev-app/ev-api1
+    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imagePullPolicy: Always
+  port: 4200
+  initReplicas: 1
+  isAutoScaling: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+evApi2:
+  name: ev-api2
+  deploymentName: ev-api2-deployment
+  serviceName: ev-api2-service
+  hpaName: ev-api2-hpa
+  host: ev-api2.prasonisoftwaresolutionsltd.co.uk
+  image:
+    imageName: ev-app/ev-api2
+    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imagePullPolicy: Always
+  port: 4300
+  initReplicas: 1
+  isAutoScaling: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+evFrontend1:
+  name: ev-frontend1
+  deploymentName: ev-frontend1-deployment
+  serviceName: ev-frontend1-service
+  host: ev-frontend1.prasonisoftwaresolutionsltd.co.uk
+  image:
+    imageName: ev-app/ev-frontend1
+    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imagePullPolicy: Always
+  port: 80
+  initReplicas: 1
+
+
+evFrontend2:
+  name: ev-frontend2
+  deploymentName: ev-frontend2-deployment
+  serviceName: ev-frontend2-service
+  host: ev-frontend2.prasonisoftwaresolutionsltd.co.uk
+  image:
+    imageName: ev-app/ev-frontend2
+    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imagePullPolicy: Always
+  port: 80
+  initReplicas: 1
+
+evIngress:
+  name: ev-app-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  ingressClassName: alb

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.evApi2.serviceName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - name: {{ .Values.evApi2.serviceName }}
+      port: {{ .Values.evApi2.port }}
+      protocol: TCP
+      targetPort: {{ .Values.evApi2.port }}
+  selector:
+    app: {{ .Values.evApi2.name }}
+  type: ClusterIP
