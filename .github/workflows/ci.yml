@@ -13,6 +13,7 @@ env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   AWS_EKS_CLUSTER_NAME: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
   HELM_VALUES_FILE_PATH: ${{ secrets.HELM_VALUES_FILE_PATH }}
+  HELM_RELEASE_NAME: ${{ secrets.HELM_RELEASE_NAME }}
 
 jobs:
   Validate:
@@ -31,7 +32,10 @@ jobs:
           helm lint .
   Deploy:
     runs-on: ubuntu-latest
-    environment: development
+    strategy:
+      matrix:
+        environment: [development]
+    environment: ${{matrix.environment}}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -67,5 +71,5 @@ jobs:
 
       - name: Deploy to EKS using Helm
         run: |
-          helm upgrade --install -f ./values.yaml -f ./${{env.HELM_VALUES_FILE_PATH}} --set imageRegistry=${{steps.login-ecr.outputs.registry}} ev-app .
+          helm upgrade --install -f ./values.yaml -f ./${{env.HELM_VALUES_FILE_PATH}} --set imageRegistry=${{steps.login-ecr.outputs.registry}} ${{env.HELM_RELEASE_NAME}} .
       
