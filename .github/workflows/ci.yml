@@ -12,6 +12,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   AWS_EKS_CLUSTER_NAME: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
+  HELM_VALUES_FILE_PATH: ${{ secrets.HELM_VALUES_FILE_PATH }}
 
 jobs:
   Validate:
@@ -22,12 +23,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Lint Helm
-        uses: WyriHaximus/github-action-helm3@v3
-        with:
-          exec: helm lint .
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Validate Helm Chart
+        run: |
+          helm lint .
   Deploy:
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -51,7 +55,6 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3
 
-
       - name: Configure AWS CLI
         run:  |
           aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}
@@ -64,7 +67,5 @@ jobs:
 
       - name: Deploy to EKS using Helm
         run: |
-          helm upgrade --install -f ./values.yaml -f ./dev.values.yaml --set imageRegistry=${{steps.login-ecr.outputs.registry}} ev-app .
+          helm upgrade --install -f ./values.yaml -f ./${{HELM_VALUES_FILE_PATH}} --set imageRegistry=${{steps.login-ecr.outputs.registry}} ev-app .
       
-        
-          
