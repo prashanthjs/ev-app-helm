@@ -6,15 +6,6 @@ on:
       - main
   pull_request:
 
-env:
-  AWS_REGION: ${{secrets.AWS_REGION}}
-  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
-  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  AWS_EKS_CLUSTER_NAME: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
-  HELM_VALUES_FILE_PATH: ${{ secrets.HELM_VALUES_FILE_PATH }}
-  HELM_RELEASE_NAME: ${{ secrets.HELM_RELEASE_NAME }}
-
 jobs:
   Validate:
     runs-on: ubuntu-latest
@@ -33,9 +24,10 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     needs: [Validate]
+    if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
-        environment: [development]
+        environment: [development, production]
     environment: ${{matrix.environment}}
     steps:
       - name: Checkout Code
@@ -46,9 +38,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -60,17 +52,11 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3
 
-      - name: Configure AWS CLI
-        run:  |
-          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws configure set default.region ${{ env.AWS_REGION }}
-
       - name: Set the kubectl context
         run: |
-          aws eks update-kubeconfig --name ${{ env.AWS_EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+          aws eks update-kubeconfig --name ${{ secrets.AWS_EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
       - name: Deploy to EKS using Helm
         run: |
-          helm upgrade --install -f ./values.yaml -f ./${{env.HELM_VALUES_FILE_PATH}} --set imageRegistry=${{steps.login-ecr.outputs.registry}} ${{env.HELM_RELEASE_NAME}} .
+          helm upgrade --install -f ./values.yaml -f ./values.${{matrix.environment}}.yaml --set imageRegistry=${{steps.login-ecr.outputs.registry}} ${{secrets.HELM_RELEASE_NAME}} .
       

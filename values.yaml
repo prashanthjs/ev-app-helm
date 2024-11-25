@@ -1,14 +1,14 @@
-imageRegistry: 631248157752.dkr.ecr.us-east-1.amazonaws.com
+imageRegistry: 897729099106.dkr.ecr.us-east-1.amazonaws.com
 namespace: default
 evApi1:
   name: ev-api1
   deploymentName: ev-api1-deployment
   serviceName: ev-api1-service
   hpaName: ev-api1-hpa
-  host: ev-api1.prasonisoftwaresolutionsltd.co.uk
+  host: ev-api1.prashi.org
   image:
     imageName: ev-app/ev-api1
-    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imageTag: latest
     imagePullPolicy: Always
   port: 4200
   initReplicas: 1
@@ -29,10 +29,10 @@ evApi2:
   deploymentName: ev-api2-deployment
   serviceName: ev-api2-service
   hpaName: ev-api2-hpa
-  host: ev-api2.prasonisoftwaresolutionsltd.co.uk
+  host: ev-api2.prashi.org
   image:
     imageName: ev-app/ev-api2
-    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imageTag: latest
     imagePullPolicy: Always
   port: 4300
   initReplicas: 1
@@ -52,10 +52,10 @@ evFrontend1:
   name: ev-frontend1
   deploymentName: ev-frontend1-deployment
   serviceName: ev-frontend1-service
-  host: ev-frontend1.prasonisoftwaresolutionsltd.co.uk
+  host: ev-frontend1.prashi.org
   image:
     imageName: ev-app/ev-frontend1
-    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imageTag: latest
     imagePullPolicy: Always
   port: 80
   initReplicas: 1
@@ -65,10 +65,10 @@ evFrontend2:
   name: ev-frontend2
   deploymentName: ev-frontend2-deployment
   serviceName: ev-frontend2-service
-  host: ev-frontend2.prasonisoftwaresolutionsltd.co.uk
+  host: ev-frontend2.prashi.org
   image:
     imageName: ev-app/ev-frontend2
-    imageTag: main-1814dd0fba3fa9217123b9b28df0c93cf2838d32
+    imageTag: latest
     imagePullPolicy: Always
   port: 80
   initReplicas: 1
