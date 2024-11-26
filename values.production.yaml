@@ -12,7 +12,7 @@ evApi2:
 evFrontend1:
   host: ev-frontend1.prashi.org
   image:
-    imageTag: main-b703b6c1cddb980ae3adb3a324e0c7299efea4c6
+    imageTag: main-f67d52f0ddd73b6f4bacf0bce9178da04b4fdb43
 
 evFrontend2:
   host: ev-frontend2.prashi.org
