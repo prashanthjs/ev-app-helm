@@ -2,19 +2,19 @@ imageRegistry: 897729099106.dkr.ecr.us-east-1.amazonaws.com
 evApi1:
   host: dev-ev-api1.prashi.org
   image:
-    imageTag: main-797751c9208e0d23f852a26d707ee2c8f57d68c3
+    imageTag: main-b703b6c1cddb980ae3adb3a324e0c7299efea4c6
 
 evApi2:
   host: dev-ev-api2.prashi.org
   image:
-    imageTag: main-797751c9208e0d23f852a26d707ee2c8f57d68c3
+    imageTag: main-b703b6c1cddb980ae3adb3a324e0c7299efea4c6
 
 evFrontend1:
   host: dev-ev-frontend1.prashi.org
   image:
-    imageTag: main-797751c9208e0d23f852a26d707ee2c8f57d68c3
+    imageTag: main-b703b6c1cddb980ae3adb3a324e0c7299efea4c6
 
 evFrontend2:
   host: dev-ev-frontend2.prashi.org
   image:
-    imageTag: main-797751c9208e0d23f852a26d707ee2c8f57d68c3
+    imageTag: main-b703b6c1cddb980ae3adb3a324e0c7299efea4c6
